@@ -38,7 +38,7 @@ try {
   const pluginManager = require(path.join(ROOT, "lib", "pluginManager"));
   const summary = pluginManager.summary();
   const requiredLegacyCommands = [
-    "menu", "list", "list-ch", "buttonlist", "listbutton", "buttons", "iqc", "spotify", "spdl", "smeme", "upch", "up",
+    "daftar", "register", "menu", "list", "list-ch", "buttonlist", "listbutton", "buttons", "iqc", "spotify", "spdl", "smeme", "upch", "up",
     "backupbot", "backup", "getscript", "tt", "tiktok", "play", "yta", "ytmp3",
     "addakses", "broadcast", "sendall", "musicgen", "genmusic", "generatemusic",
     "igdl", "igdownload", "instagram", "audio2text", "a2t", "transcribe", "brat",

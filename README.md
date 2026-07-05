@@ -42,3 +42,23 @@ jadibot-sessions/
 ## Catatan keamanan
 
 Jangan upload file runtime seperti `data/*.json`, session, logs, tmp, backup, atau `.env` ke GitHub publik.
+
+## Fitur registrasi
+
+User baru wajib daftar sebelum memakai fitur bot umum.
+
+Format:
+
+```txt
+.daftar nama,umur
+```
+
+Contoh:
+
+```txt
+.daftar Rafael,18
+```
+
+Bot akan mengirim gambar captcha. User cukup mengetik kode pada gambar tanpa command. Jika kode benar, akun tersimpan sebagai user terdaftar.
+
+Setiap command yang berhasil dijalankan oleh user terdaftar akan menambah EXP. Saat EXP mencapai batas level berikutnya, level naik dan user mendapat bonus limit.
