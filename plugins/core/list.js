@@ -24,7 +24,7 @@ module.exports = {
 
 
         let imageMsg = await generateWAMessageContent(
-            { image: { url: 'https://athars.space/uploads/88749507.png' } },
+            { image: { url: 'https://nayaara.my.id/f/ke9DSKzwJCR5' } },
             { upload: Rafael.waUploadToServer }
         );
 
