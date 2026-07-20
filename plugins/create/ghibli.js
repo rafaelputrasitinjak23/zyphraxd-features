@@ -1,11 +1,3 @@
-/*
- * Source converter created by : febry.is-a.dev
- * GitHub                      : vandebry10-star
- * Date                        : 16-07-2026
- *
- * Do not remove the creator's watermark, please respect the creator.
- */
-
 const { AnimeConverter } = require("../../lib/animeConverter");
 
 function withTimeout(promise, timeout, message = "Proses melewati batas waktu.") {
@@ -70,7 +62,7 @@ module.exports = {
           "✨ *PHOTO TO GHIBLI*",
           "Berhasil mengubah foto menjadi ilustrasi anime bergaya Ghibli.",
           "",
-          "Credit converter: febry.is-a.dev"
+          ""
         ].join("\n")
       },
       { quoted: m }
