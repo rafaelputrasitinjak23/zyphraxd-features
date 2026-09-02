@@ -62,3 +62,21 @@ Contoh:
 Bot akan mengirim gambar captcha. User cukup mengetik kode pada gambar tanpa command. Jika kode benar, akun tersimpan sebagai user terdaftar.
 
 Setiap command yang berhasil dijalankan oleh user terdaftar akan menambah EXP. Saat EXP mencapai batas level berikutnya, level naik dan user mendapat bonus limit.
+
+## MongoDB Jadibot sessions
+
+Jadibot authentication state and session metadata are persisted in MongoDB when `MONGODB_URI` is configured. The worker process must stay alive because Baileys connections are long-lived.
+
+Required environment variables:
+
+- `MONGODB_URI`
+- `MONGODB_DB` (default: `zyphra`)
+- `JADIBOT_MAX_BOTS` (default: `3`)
+
+Run the worker with:
+
+```bash
+npx zyphra-jadibot-worker
+```
+
+The API project in `zyphra-jadibot-api` communicates with this worker through the MongoDB `jadibot_commands` collection.
