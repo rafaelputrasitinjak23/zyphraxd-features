@@ -3,7 +3,7 @@ const {
   yts, moment, wrapper, CookieJar, cheerio, youtubeDl, Smeme, audio2text,
   ChatMusicAPI, downloadInstagram, createBotBackup, deleteBotBackup,
   createTempPath, safeUnlink, runFfmpeg, withTimeout, normalizeJid,
-  readAccessUsers, writeAccessUsers, checkAccess, ctext
+  readAccessUsers, writeAccessUsers, checkAccess, getAccessEntries, ctext
 } = require("../../lib/pluginUtils");
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
         if (!text) return m.reply(`Format salah!\nGunakan: *${prefix + command}* [pesan]\nContoh: *${prefix + command}* Halo semua!`);
         
         try {
-            const users = readAccessUsers().map(normalizeJid).filter(Boolean);
+            const users = getAccessEntries().map(entry => entry.jid).filter(Boolean);
             
             if (!Array.isArray(users) || users.length === 0) {
                 return m.reply('Tidak ada user yang terdaftar.');

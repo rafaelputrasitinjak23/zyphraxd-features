@@ -72,18 +72,63 @@ module.exports = {
             const cachedYoutube = await downloaderCache.getOrSet(
                 `youtube-audio:${vidUrl}`,
                 () => withTimeout(
-                    youtubeDl(vidUrl, true),
+                    axios.get('https://api.shusaku.my.id/api/downloader/ytmp3', {
+                        params: { url: vidUrl },
+                        timeout: 120_000,
+                        headers: {
+                            'Accept': 'application/json',
+                            'User-Agent': 'Mozilla/5.0'
+                        }
+                    }).then(res => res.data),
                     120_000,
-                    "YouTube downloader melewati batas waktu."
+                    "Shusaku YTMP3 melewati batas waktu."
                 ),
                 8 * 60 * 1000
             );
+
             const result = cachedYoutube.value;
-            if (!result || !result.status) {
-                return m.reply(`❌ *Gagal mendapatkan link unduhan!*\nAlasan: ${result?.message || 'Tidak diketahui'}`);
+            const pickDownloadUrl = (value) => {
+                if (!value) return null;
+                if (typeof value === 'string') {
+                    if (/^https?:\/\//i.test(value) &&
+                        !/youtube\.com|youtu\.be/i.test(value)) return value;
+                    return null;
+                }
+                if (Array.isArray(value)) {
+                    for (const item of value) {
+                        const found = pickDownloadUrl(item);
+                        if (found) return found;
+                    }
+                    return null;
+                }
+                if (typeof value === 'object') {
+                    const preferredKeys = [
+                        'download', 'download_url', 'downloadUrl', 'dl_url', 'dlUrl',
+                        'audio', 'audio_url', 'audioUrl', 'mp3', 'url', 'link', 'result'
+                    ];
+                    for (const key of preferredKeys) {
+                        if (value[key] !== undefined) {
+                            const found = pickDownloadUrl(value[key]);
+                            if (found) return found;
+                        }
+                    }
+                    for (const [key, child] of Object.entries(value)) {
+                        if (/title|thumbnail|image|author|creator|message|status|success/i.test(key)) continue;
+                        const found = pickDownloadUrl(child);
+                        if (found) return found;
+                    }
+                }
+                return null;
+            };
+
+            const resultUrl = pickDownloadUrl(result);
+            const resultTitle = result?.title || result?.result?.title || result?.data?.title;
+            const resultThumbnail = result?.thumbnail || result?.result?.thumbnail || result?.data?.thumbnail;
+            if (!resultUrl) {
+                return m.reply(`❌ *Gagal mendapatkan link audio dari API Shusaku!*\nAlasan: ${result?.message || result?.error || 'Response API tidak berisi URL audio.'}`);
             }
-            title = result.title || title;
-            cover = result.thumbnail || cover;
+            title = resultTitle || title;
+            cover = resultThumbnail || cover;
             const { runtimePath } = require('../../lib/paths');
             const tempDir = runtimePath('tmp', 'youtube');
             if (!fs.existsSync(tempDir)) {
@@ -94,7 +139,7 @@ module.exports = {
             tempOgg = path.join(tempDir, `${timeStr}.ogg`);
             const response = await axios({
                 method: 'GET',
-                url: result.dl_url,
+                url: resultUrl,
                 responseType: 'stream',
                 timeout: 90_000,
                 maxContentLength: 100 * 1024 * 1024
