@@ -205,6 +205,10 @@ function pelangganHelp(prefix) {
     "",
     "Command owner:",
     `• ${prefix}addpelanggan 628xxxxxxxxxx 30d`,
+    `• ${prefix}addpelanggan 628xxxxxxxxxx 1 hari`,
+    `• ${prefix}addpelanggan 628xxxxxxxxxx 7 hari`,
+    `• ${prefix}addpelanggan 628xxxxxxxxxx 1 bulan`,
+    `• ${prefix}addpelanggan 628xxxxxxxxxx permanent`,
     `• ${prefix}delpelanggan 628xxxxxxxxxx`,
     `• ${prefix}listpelanggan`,
     `• ${prefix}listjadibot`,
@@ -249,9 +253,11 @@ module.exports = {
     if (cmd === "addpelanggan") {
       if (!isCreator) return m.reply("Command ini hanya untuk owner utama.");
       const target = pelangganManager.normalizeJid(args[0]);
-      const duration = args[1] || "30d";
+      // Gabungkan sisa argumen agar format seperti "1 hari", "7 hari",
+      // "1 bulan", dll. juga bisa digunakan.
+      const duration = args.slice(1).join(" ").trim() || "30d";
       if (!target) {
-        return m.reply(`Format salah.\n\nContoh:\n${prefix}addpelanggan 628xxxxxxxxxx 30d\n${prefix}addpelanggan 628xxxxxxxxxx permanent`);
+        return m.reply(`Format salah.\n\nContoh:\n${prefix}addpelanggan 628xxxxxxxxxx 30d\n${prefix}addpelanggan 628xxxxxxxxxx 1 hari\n${prefix}addpelanggan 628xxxxxxxxxx 7 hari\n${prefix}addpelanggan 628xxxxxxxxxx 1 bulan\n${prefix}addpelanggan 628xxxxxxxxxx permanent`);
       }
 
       const record = pelangganManager.add(target, {
