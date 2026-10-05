@@ -50,7 +50,6 @@ User baru wajib daftar sebelum memakai fitur bot umum.
 Format:
 
 ```txt
-.daftar nama,umur
 ```
 
 Contoh:

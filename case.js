@@ -24,33 +24,6 @@ const errorMonitor = require("./lib/errorMonitor");
 const groupAccessManager = require("./lib/groupAccessManager");
 const { buildOwnerRoles, canUseOwnerCommand, isGroupAccessCommand } = require("./lib/ownerAccess");
 
-const REGISTRATION_BYPASS_COMMANDS = new Set([
-  "daftar",
-  "register",
-  "menu",
-  "help",
-  "allmenu",
-  "buttonlist",
-  "listbutton",
-  "buttons",
-  "profile",
-  "me",
-  "limit",
-  "premium",
-  "downloadmenu",
-  "createmenu",
-  "stickermenu",
-  "audiomenu",
-  "channelmenu",
-  "ownermenu",
-  "toolsmenu",
-  "othermenu",
-  "groupmenu",
-  "systemmenu",
-  "botmenu",
-  "gamemenu"
-]);
-
 function getNativeFlowSelection(m) {
   const raw =
     m?.msg?.nativeFlowResponseMessage?.paramsJson ||
@@ -95,11 +68,6 @@ function hasMinimumInput(plugin, context) {
   if (plugin.requiresMedia && !String(context.mime || "").trim()) return false;
   if (plugin.requiresQuoted && !context.m?.quoted) return false;
   return true;
-}
-
-function canBypassRegistration(command, context) {
-  if (context.isCreator || context.isMainOwner || context.isChildOwner) return true;
-  return REGISTRATION_BYPASS_COMMANDS.has(String(command || "").toLowerCase());
 }
 
 async function logFeatureError(error, context) {
@@ -312,17 +280,6 @@ module.exports = async (Rafael, m) => {
         return m.reply(buildSuggestionMessage(command, suggestions, prefix || "."));
       }
       return m.reply(`Command *${prefix || "."}${command}* tidak ditemukan.\nKetik *${prefix || "."}menu* atau *menu* untuk melihat daftar fitur.`);
-    }
-
-    if (!user?.registered && !canBypassRegistration(command, context)) {
-      return m.reply([
-        "Kamu belum terdaftar.",
-        "",
-        `Daftar dulu dengan format:`,
-        `${prefix || "."}daftar nama,umur`,
-        "",
-        `Contoh: ${prefix || "."}daftar Rafael,18`
-      ].join("\n"));
     }
 
     const denial = pluginManager.authorize(plugin, context);

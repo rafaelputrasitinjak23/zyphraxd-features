@@ -1,0 +1,16 @@
+{
+  "meta": {
+    "version": 1,
+    "createdAt": "2026-10-05T10:07:48.599Z",
+    "updatedAt": "2026-10-05T10:07:48.600Z"
+  },
+  "users": {},
+  "groups": {},
+  "stats": {
+    "messages": 0,
+    "commands": 0,
+    "errors": 0,
+    "commandUsage": {},
+    "startedAt": "2026-10-05T10:07:48.600Z"
+  }
+}
