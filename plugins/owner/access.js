@@ -47,8 +47,8 @@ module.exports = {
 
       const next = entries.filter(entry => entry.jid !== target);
       next.push({ jid: target, expiresAt });
+      database.setAccess(target, expiresAt, "Access User");
       writeAccessUsers(next);
-      database.getUser(target, "Access User");
 
       const expiryText = expiresAt
         ? new Date(expiresAt).toLocaleString("id-ID", { dateStyle: "medium", timeStyle: "short" })
