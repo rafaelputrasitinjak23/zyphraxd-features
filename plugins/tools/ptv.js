@@ -103,7 +103,10 @@ module.exports = {
         '-preset', 'veryfast',
         '-crf', '28',
         '-pix_fmt', 'yuv420p',
-        '-an',
+        '-c:a', 'aac',
+        '-b:a', '96k',
+        '-ar', '48000',
+        '-ac', '2',
         '-movflags', '+faststart',
         outputPath
       ]);
